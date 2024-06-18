@@ -2,8 +2,10 @@ from utils.config import *
 
 initialize_page()
 
+col1, col2 = st.columns([5,1])
+if col2.button(label="Ir à página de gráficos"):
+    switch_page("ADM_plotpage")
 col1, col2, col3 = st.columns([1.5,1,1.5])
-col2.title("")
 col2.title("tela do ADM")
 col1, col2, col3 = st.columns([1,4,1])
 col2.subheader("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do aimusmod tempor")
