@@ -15,10 +15,10 @@ st.title("")
 form_email = st.container(border=True)
 form_email.title("")
 col1, col2 = form_email.columns([4,1])
-email = col1.text_input(label="None", label_visibility="collapsed", placeholder="Email")
+email = col1.text_input(label="Email")
 if col2.button(label="Enviar código de verificação", use_container_width=True):
     pass
-codigo = form_email.text_input(label="None", label_visibility="collapsed", placeholder="Código de verificação", max_chars=6)
+codigo = form_email.text_input(label="Código", max_chars=6)
 col1, col2, col3 = form_email.columns(3)
 if col2.button(label="Validar código", use_container_width=True):
     switch_page("ADM_edificio")
