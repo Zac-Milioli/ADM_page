@@ -73,3 +73,4 @@ if col2.button(label='Gerar código da pesquisa', use_container_width=True):
     col2.subheader("Este dado deverá ser inserido na tela inicial da pesquisa junto")
     col1, col2, col3 = st.columns([0.8,1,0.5])
     col2.subheader("com o código de verificação pessoal")
+    col2.markdown("Acesse o link https://www.google.com (placeholder) para responder ao questionário")
