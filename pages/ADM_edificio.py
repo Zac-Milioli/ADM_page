@@ -19,16 +19,25 @@ form_edificio = st.container(border=True)
 form_edificio.title("")
 
 col1, col2 = form_edificio.columns([1,3])
-cep = col1.text_input(label="CEP")
+cep = col1.text_input(label="CEP", max_chars=8)
 
 endereco_c = form_edificio.container()
 col1, col2, col3, col4 = endereco_c.columns([2,0.5,1.5,1])
 
+body = {'erro': True}
 if cep:
-    endereco = col1.text_input(label="Endereço", disabled=True, value='Rua João Pio Duarte Silva, Córrego Grande')
-    numero = col2.text_input(label="Número")
-    complemento = col3.text_input(label="Complemento")
-    cidade = col4.text_input(label="Cidade", disabled=True, value='Florianópolis, SC')
+    full_link = cep_link.format(cep)
+    response = requests.get(full_link)
+    body = response.json()
+    if not body.get('erro'):    
+        cep_worked = True
+        endereco = col1.text_input(label="Endereço", disabled=True, value=f"{body['logradouro']}, {body['bairro']}")
+        numero = col2.text_input(label="Número")
+        complemento = col3.text_input(label="Complemento")
+        cidade = col4.text_input(label="Cidade", disabled=True, value=f"{body['localidade']}/{body['uf']}")
+    else:
+        st.error("ERRO: CEP não encontrado", icon="⚠️")
+
 
 col1, col2 = form_edificio.columns([1,3])
 
@@ -60,7 +69,7 @@ aplicada_todos_locais = col2.radio(label='none', label_visibility="collapsed", o
 aplicada_todos_locais_desc = col3.text_input(label='Informe o trecho')
 
 not_all_answered = True
-if cep:
+if not body.get('erro'):
     check_answers = [cep, endereco, numero, complemento, cidade, local_trabalho, ocupa_trabalho, aplicada_todos_locais, n_pavimentos]
     if None not in check_answers:
         not_all_answered = False
@@ -73,4 +82,5 @@ if col2.button(label='Gerar código da pesquisa', use_container_width=True, disa
     col2.subheader("Este dado deverá ser inserido na tela inicial da pesquisa junto")
     col1, col2, col3 = st.columns([0.8,1,0.5])
     col2.subheader("com o código de verificação pessoal")
+    col1, col2, col3 = st.columns([0.85,1,0.8])
     col2.markdown("Acesse o link https://www.google.com (placeholder) para responder ao questionário")
