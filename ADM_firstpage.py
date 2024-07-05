@@ -1,3 +1,5 @@
+import streamlit as st
+st.set_page_config(layout='wide',initial_sidebar_state='collapsed')
 from utils.config import *
 
 initialize_page()
@@ -22,4 +24,5 @@ if col2.button(label="Enviar código de verificação", use_container_width=True
 codigo = form_email.text_input(label="Código", max_chars=6)
 col1, col2, col3 = form_email.columns(3)
 if col2.button(label="Validar código", use_container_width=True):
+    st.session_state['email'] = email
     switch_page("ADM_edificio")
