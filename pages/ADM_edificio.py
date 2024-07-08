@@ -72,19 +72,18 @@ aplicada_todos_locais_desc = col3.text_input(label='Informe o trecho')
 not_all_answered = True
 if not body.get('erro'):
     aplicada_todos_locais_desc = 'Sem trecho informado' if aplicada_todos_locais_desc == '' else aplicada_todos_locais_desc
-    check_answers = [cep, endereco, numero, complemento, cidade, uf, local_trabalho, ocupa_trabalho, n_pavimentos, aplicada_todos_locais, aplicada_todos_locais_desc]
+    check_answers = [cep, endereco, numero, complemento, cidade, uf, local_trabalho, ocupa_trabalho, f"{n_pavimentos}" if n_pavimentos is not None else None, aplicada_todos_locais, aplicada_todos_locais_desc]
     if None not in check_answers:
         not_all_answered = False
 
 col1, col2 = st.columns([4,1])
 if col2.button(label='Gerar código da pesquisa', use_container_width=True, disabled=not_all_answered):
-    answered = [st.session_state['email']] + check_answers
-    answers = {q: a for q, a in zip(questions, answered)}
-    build_df.loc[len(build_df)] = answers
-    register_building(build_df)
+    codigo = randint(10000000, 99999999)
+    answered = [codigo, st.session_state['email']] + check_answers
+    register_building(answered)
     col1, col2, col3 = st.columns([0.6,1,0.6])
     col2.title("")
-    col2.title(f"O código da sua pesquisa é {randint(10000000, 99999999)}")
+    col2.title(f"O código da sua pesquisa é {codigo}")
     col2.subheader("Este dado deverá ser inserido na tela inicial da pesquisa junto")
     col1, col2, col3 = st.columns([0.8,1,0.5])
     col2.subheader("com o código de verificação pessoal")
