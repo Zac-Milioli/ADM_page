@@ -62,19 +62,6 @@ def register_building(values_list: list):
     worksheet_build.append_row(values_list)
 
 
-# def mail_me(mail_person:str, edificacao:dict):
-#     corpo_email = f'{edificacao}'
-#     msg = email.message.Message()
-#     msg['Subject'] = f'EDIFICACAO-{mail_person}'
-#     msg['From'] = 'escritorios.qai.bot@gmail.com'
-#     msg['To'] = 'escritorios.qai.bot@gmail.com'
-#     msg.set_payload(corpo_email)
-#     s = smtplib.SMTP('smtp.gmail.com: 587')
-#     s.starttls()
-#     s.login(msg['From'], password)
-#     s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
-
-
 def mail_auth_code(mail_person:str):
     auth_code = authorization_list[randint(0, len(authorization_list)-1)]
     corpo_email = f"""
