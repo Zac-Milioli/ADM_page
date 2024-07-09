@@ -8,7 +8,7 @@ from streamlit_gsheets import GSheetsConnection
 import gspread
 from google.oauth2.service_account import Credentials
 import json
-import pandas as pd
+# import pandas as pd
 
 # ---------------VARIÁVEIS---------------
 
@@ -34,8 +34,8 @@ authorization_list = ["519249","215333","885531","618511","572447","869808","795
 
 cep_link = "https://viacep.com.br/ws/{}/json/"
 
-questions = ['codigo', 'email','cep','endereco','numero','complemento','cidade', 'uf','local-trabalho','ocupacao','ocupacao-desc','aplicada-toda-ocupacao','aplicada-toda-ocupacao-desc']
-build_df = pd.DataFrame(columns=questions)
+# questions = ['codigo', 'email','cep','endereco','numero','complemento', 'bairro','cidade', 'uf','local-trabalho','ocupacao','ocupacao-desc','aplicada-toda-ocupacao','aplicada-toda-ocupacao-desc']
+# build_df = pd.DataFrame(columns=questions)
 
 # ---------------------------------------
 
@@ -88,7 +88,7 @@ def send_thanks_email(mail_person:str):
     corpo_email = f"""
     <h2>A equipe LabEEE agradece pela participação na pesquisa!</h2>
     <br>
-    <p>Seu ambiente de trabalho foi registrado com sucesso em nossa base de dados e está pronto para </p>
+    <p>Seu ambiente de trabalho foi registrado com sucesso em nossa base de dados</p>
     <br>
     <hr>
     <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>

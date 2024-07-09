@@ -22,7 +22,7 @@ col1, col2 = form_edificio.columns([1,3])
 cep = col1.text_input(label="CEP", max_chars=8)
 
 endereco_c = form_edificio.container()
-col1, col2, col3, col4, col5 = endereco_c.columns([2,0.5,1.5,1,0.5])
+col1, col2, col3, col4, col5, col6 = endereco_c.columns([2,0.5,1.5, 1,1,0.5])
 
 body = {'erro': True}
 if cep:
@@ -31,11 +31,12 @@ if cep:
     body = response.json()
     if not body.get('erro'):    
         cep_worked = True
-        endereco = col1.text_input(label="Endereço", disabled=True, value=f"{body['logradouro']}, {body['bairro']}")
+        endereco = col1.text_input(label="Endereço", disabled=True, value=f"{body['logradouro']}")
         numero = col2.text_input(label="Número")
         complemento = col3.text_input(label="Complemento")
-        cidade = col4.text_input(label="Cidade", disabled=True, value=f"{body['localidade']}")
-        uf = col5.text_input(label="UF", disabled=True, value=f"{body['uf']}")
+        bairro = col4.text_input(label="Bairro", disabled=True, value=f"{body['bairro']}")
+        cidade = col5.text_input(label="Cidade", disabled=True, value=f"{body['localidade']}")
+        uf = col6.text_input(label="UF", disabled=True, value=f"{body['uf']}")
     else:
         st.error("ERRO: CEP não encontrado", icon="⚠️")
 
@@ -72,7 +73,7 @@ aplicada_todos_locais_desc = col3.text_input(label='Informe o trecho')
 not_all_answered = True
 if not body.get('erro'):
     aplicada_todos_locais_desc = 'Sem trecho informado' if aplicada_todos_locais_desc == '' else aplicada_todos_locais_desc
-    check_answers = [cep, endereco, numero, complemento, cidade, uf, local_trabalho, ocupa_trabalho, f"{n_pavimentos}" if n_pavimentos is not None else None, aplicada_todos_locais, aplicada_todos_locais_desc]
+    check_answers = [cep, endereco, numero, complemento, bairro, cidade, uf, local_trabalho, ocupa_trabalho, f"{n_pavimentos}" if n_pavimentos is not None else None, aplicada_todos_locais, aplicada_todos_locais_desc]
     if None not in check_answers:
         not_all_answered = False
 
