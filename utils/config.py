@@ -16,13 +16,16 @@ conn = st.connection("gsheets", type=GSheetsConnection, ttl=10)
 
 # ESTA VARIÁVEL É SENSÍVEL E NA APLICAÇÃO REAL DEVE SER ADICIONADA AO ENV DO STREAMLIT E ACESSADA ATRAVÉS DE st.secrets["credentials"]
 credentials = {"type": "service_account","project_id": "sheets-connection-api","private_key_id": "c693b8107c458cd42c7f0be9ffc706aa6eff4dbd","private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDDh3+tWRN886tG\nkrOEBRbMxvFAQITqV8FefzkoZVkTX31Gad+yTgd/T7phnU/mcUcm9vNRjbRfBXqU\nOC+Qle9kldqJGOzhA2IvwGLHnN5+jVUXAl9Nj6C8Fs3qdiZfwEXnC62APIo9QYrR\nH0/u+ixkPFzPEu/3Ny8ECagKSt8hIxCAHU1Fe383XfiWHRebu/wdxlvBNL/Erlnf\nTygY0Cdm3ntMJbAdXRDDtO1sbL8y2Y7dsJNh5yex7kOFF7CgGWoZoiXwx4ujikd+\n1l6QG+So8nxp7pf1e/T3RA2Tfby47MjON/MWEF4p4XqGLt7zt3bkZJQagwuAeAD2\nGsjFNwMLAgMBAAECggEAF4eCO0uJV1OBTGxR8vSj0j+sf3VkKUknKWZ4694KUpT+\nn88UzsGqEE15Wc7S8yG1lMBJ9ontZzPjFNwQCT+pv7pywmW/97HvCl0F5gyAD82V\nLEAqVMyQZKH/5JOUOZiLMOsMVW6zmfx9pn20okbzuZoz9u1J+D9pRnyc/qQU5sk5\nn0i/GbHUQUwfWo2RsJ0zjvOz5n5Xc0lawvUIa04ugQfz67leDQpAkjLdw/09C3d7\nEASfL7eYI7FsAjP5HtRbS5Yd6TO4OzOp8aGJTZn+PBhjgy8gidFHKGVycecB/B5L\nyFVsV+MUqFZfq+2Vt6iV/gQsEdaMf1uILkULKXBPRQKBgQD/DlxsKkYZSAUwVnrT\n86kWXQRPjSJ5U9yGvt1Skd/x/LtWWDdNB2FVSauSSJhK+LZHlCiWc7o0gqFvq2ok\nc3zmAEN3FBUGXJXcIECtaLGgcK1XeujcpqnAhKoAsl5Z4HTCN9U7G3/7jHgmF97k\nbhR3Eu2c0WVth/RyNRutU2QNhwKBgQDEQL4Gy3zgvsoxxaZQYAf8McbwEepAzfzZ\nfr/KxY0pWT4zptgkhW0+QwSaCXShISzBiJy9aQu7Mn7XuawkKTADO428FFSZJUOe\nToR1JWzmrpGJYWR+M+asCvfVfYkEL8MoqrMBCZAwYobq07X3AiU+BohH5qi3Povq\nO+75/p9fXQKBgQDkjZLmXm9YYkA8E5KXcaXYY1vkiV0WCb74g/pB7nQWHVomQoCz\npuRij9SODj1iGUMGG07Pmz6FpXVSYvGHXnHSjPPntfgtLjQgAErU2ZcqZS3/0STv\n7Oz6libc3vlLYqZeD7gk8jyaRkK4J/XVDouKNEz2lHFmWEkFOm/lvm9O6wKBgHFr\nBSdCJJpySMI4+uQKi7LZRaJqiBoJsa40jTzvrKQP2l3Zd6KrpbXM33TyMAAK/yWe\nAQ+KDOiTxzB/Mpf3YbMMkN34Vefn3Es6D1zwUx6CFsPxkDVLY21cLVypXy0XOU9g\nT3EzCKyd1GEUF154U/OjrND44dp9ADlPh83ctFhVAoGBAMv3ly9loXruAqF2DC+8\nQkyrCI5hsNz9H2uuMhYRaCA9iWGPGr8ISrrlgYnu//mIDQ9MDJiwDBCYTQi081XU\nEM/eANKnpvGzdfQ2+9tesYM7gFH58joeZNQaXbSGSusQol7m/4CqG7VbUz7mAxqq\n0TfslpSbMgx3BmKNqwpJue3Y\n-----END PRIVATE KEY-----\n","client_email": "sheet-bot-api@sheets-connection-api.iam.gserviceaccount.com","client_id": "103080225992158614942","auth_uri": "https://accounts.google.com/o/oauth2/auth","token_uri": "https://oauth2.googleapis.com/token","auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs","client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sheet-bot-api%40sheets-connection-api.iam.gserviceaccount.com","universe_domain": "googleapis.com"}
+
 with open("credentials.json", "w") as file:
     json.dump(credentials, file, indent=2)
 scopes = ["https://www.googleapis.com/auth/spreadsheets"]
 creds = Credentials.from_service_account_file(r"credentials.json", scopes=scopes)
 client = gspread.authorize(creds)
+
 # ESTA VARIÁVEL É SENSÍVEL E NA APLICAÇÃO REAL DEVE SER ADICIONADA AO ENV DO STREAMLIT E ACESSADA ATRAVÉS DE st.secrets["sheet_id"]
 sheet_id = "1T3D_x6qr4OjXQ6qMXJR0ZCywifJaHP1ck-PbZ2vT_2I"
+
 workbook = client.open_by_key(sheet_id)
 worksheet_build = workbook.worksheet('build')
 worksheet_user = workbook.worksheet('user')
@@ -65,9 +68,9 @@ def register_building(values_list: list):
 def mail_auth_code(mail_person:str):
     auth_code = authorization_list[randint(0, len(authorization_list)-1)]
     corpo_email = f"""
-    <p>Seu código de verificação para o registro de um edifício<p>
+    <p>Este é o seu código de verificação para se cadastrar como administrador<p>
     <h1><strong>{auth_code}</strong></h1>
-    <br>
+    <p>Insira este código na página do ADM e informe os dados necessários para criar o ID do local de trabalho.</p>
     <hr>
     <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>
     <a href="https://labeee.ufsc.br/pt-br/en-welcome"><img src="https://labeee.ufsc.br/sites/default/files/labeee_final_completo_maior.png" width="400" /></a>"""
@@ -84,11 +87,17 @@ def mail_auth_code(mail_person:str):
     return auth_code
 
 
-def send_thanks_email(mail_person:str):
+def confirmation_email(mail_person:str, id_: str, data: str):
     corpo_email = f"""
-    <h2>A equipe LabEEE agradece pela participação na pesquisa!</h2>
+    <h2>Seu local de trabalho foi cadastrado com sucesso.</h2>
+    <p>Este é o ID do seu local de trabalho:</p>
     <br>
-    <p>Seu ambiente de trabalho foi registrado com sucesso em nossa base de dados</p>
+    <h1><strong>{id_}</strong></h1>
+    <br>
+    <p><strong>Informe o ID do local de trabalho para todos os participantes da pesquisa. Este código será necessário para acessar o questionário.</strong></p>
+    <p>O ID do local de trabalho é único e refere-se aos seguintes dados informados:</p>
+    <li style="color: #b7b7b7;">{'</li><li style="color: #b7b7b7;">'.join(data)}</li>
+    <p>Você pode usar este ID sempre que desejar avaliar o mesmo local de trabalho.</p>
     <br>
     <hr>
     <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>
@@ -103,6 +112,27 @@ def send_thanks_email(mail_person:str):
     s.starttls()
     s.login(msg['From'], password)
     s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
+
+def mailto(participants: list, id_: str):
+    corpo_email = f"""
+    <h1>Você foi convidado a avaliar o seu local de trabalho.</h1>
+    <p>Clique aqui para acessar o questionário https://www.google.com e informe o ID do seu local de trabalho:</p>
+    <h2><strong>{id_}</strong></h2>
+    <br>
+    <hr>
+    <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>
+    <a href="https://labeee.ufsc.br/pt-br/en-welcome"><img src="https://labeee.ufsc.br/sites/default/files/labeee_final_completo_maior.png" width="400" /></a>"""    
+    msg = email.message.Message()
+    msg['Subject'] = f'CONFIRMAÇÃO DE PARTICIPAÇÃO - QAI em escritórios, LabEEE'
+    msg['From'] = 'escritorios.qai.bot@gmail.com'
+    msg.add_header('Content-Type', 'text/html')
+    s = smtplib.SMTP('smtp.gmail.com: 587')
+    msg.set_payload(corpo_email)
+    s.starttls()
+    s.login(msg['From'], password)
+    for participant in participants:
+        msg['To'] = participant
+        s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
 
 
 ## STREAMLIT_EXTRAS --> switch page button

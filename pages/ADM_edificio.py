@@ -3,20 +3,21 @@ from utils.config import *
 initialize_page()
 
 
-col1, col2, col3 = st.columns([1.3,1,1.3])
+col1, col2, col3 = st.columns([1,1.5,1])
 if col1.button('Voltar'):
     switch_page("ADM_firstpage")
 col2.title("")
-col2.title("Dados do edifício")
-col1, col2, col3 = st.columns([1,4,1])
-col2.subheader("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do aimusmod tempor")
-col1, col2, col3 = st.columns([1.5,1,1.5])
-col2.subheader("incidinunt ut labore")
+col2.title("Cadastrar novo local de trabalho")
+col1, col2, col3 = st.columns([1.15,2,1])
+col2.markdown("Todos os dados informados são confidenciais e não serão divulgados aos participantes da pesquisa.")
+col2.markdown("As informações abaixo são necessárias para garantir o tratamento adequado dos resultados.")
+# col1, col2, col3 = st.columns([1.5,1,1.5])
+col2.markdown("Os dados tratados são automaticamente anonimizados.")
 
 st.title("")
 form_edificio = st.container(border=True)
 
-form_edificio.title("")
+form_edificio.header("Insira abaixo os dados do local de trabalho que você deseja avaliar:")
 
 col1, col2 = form_edificio.columns([1,3])
 cep = col1.text_input(label="CEP", max_chars=8)
@@ -41,7 +42,7 @@ if cep:
         st.error("ERRO: CEP não encontrado", icon="⚠️")
 
 
-col1, col2 = form_edificio.columns([1,3])
+col1, col2, col3 = form_edificio.columns([1,1,3])
 
 col1.title("")
 col1.markdown("O seu local de trabalho corresponde a:")
@@ -51,42 +52,58 @@ local_trabalho = col2.radio(label="none", label_visibility="collapsed", options=
 col1.title("")
 col1.markdown("O seu local de trabalho ocupa:")
 col2.title("")
-ocupa_trabalho = col2.radio(label="none", label_visibility="collapsed", options=["Edifício completo", "Pavimento(s) inteiro(s)", "Trecho de um pavimento"], horizontal=True, index=None)
+ocupa_trabalho = col2.radio(label="none", label_visibility="collapsed", options=["Edifício completo", "Pavimento(s) inteiro(s)", "Trecho de um pavimento"], horizontal=False, index=None)
 
 n_pavimentos = 'Trecho'
-form_edificio.title("")
+col3.title('')
+col3.title('')
+col3.title('')
 if ocupa_trabalho == "Edifício completo":
-    form_edificio.markdown("Quantos pavimentos o edifício possui?")
-    n_pavimentos = form_edificio.number_input(label="none", label_visibility="collapsed", min_value=0, max_value=163)
+    col3.markdown("Quantos pavimentos o edifício possui?")
+    n_pavimentos = col3.number_input(label="none", label_visibility="collapsed", min_value=0, max_value=163)
     n_pavimentos = None if n_pavimentos == 0 else n_pavimentos
 elif ocupa_trabalho == "Pavimento(s) inteiro(s)":
-    form_edificio.markdown("Qual(is) pavimento(s) é(são) ocupado(s)?")
-    n_pavimentos = form_edificio.multiselect(label="none", label_visibility="collapsed", placeholder="pavimento", options=range(1,163))
+    col3.markdown("Qual(is) pavimento(s) é(são) ocupado(s)?")
+    n_pavimentos = col3.multiselect(label="none", label_visibility="collapsed", placeholder="pavimento", options=range(1,163))
     n_pavimentos = None if len(n_pavimentos) == 0 else n_pavimentos
 
 form_edificio.title("")
 col1, col2, col3 = form_edificio.columns([1,0.5,3])
 col1.markdown("A pesquisa será aplicada em todos os locais de ocupação?")
 aplicada_todos_locais = col2.radio(label='none', label_visibility="collapsed", options=["Sim", "Não"], horizontal=True, index=None)
-aplicada_todos_locais_desc = col3.text_input(label='Informe o trecho')
+if aplicada_todos_locais == "Não":
+    aplicada_todos_locais_desc = col3.text_input(label='Informe o trecho')
+else:
+    aplicada_todos_locais_desc = "Completo"
 
-not_all_answered = True
+if not st.session_state.get('not_all_answered'):
+    st.session_state['not_all_answered'] = True    
+
 if not body.get('erro'):
-    aplicada_todos_locais_desc = 'Sem trecho informado' if aplicada_todos_locais_desc == '' else aplicada_todos_locais_desc
+    # aplicada_todos_locais_desc = 'Sem trecho informado' if aplicada_todos_locais_desc == '' else aplicada_todos_locais_desc
     check_answers = [cep, endereco, numero, complemento, bairro, cidade, uf, local_trabalho, ocupa_trabalho, f"{n_pavimentos}" if n_pavimentos is not None else None, aplicada_todos_locais, aplicada_todos_locais_desc]
-    if None not in check_answers:
-        not_all_answered = False
+    if None not in check_answers and "" not in check_answers:
+        st.session_state['not_all_answered'] = False
 
 col1, col2 = st.columns([4,1])
-if col2.button(label='Gerar código da pesquisa', use_container_width=True, disabled=not_all_answered):
+if col2.button(label='Gerar ID do local de trabalho', use_container_width=True, disabled=st.session_state['not_all_answered']):
     codigo = randint(10000000, 99999999)
     answered = [codigo, st.session_state['email']] + check_answers
     register_building(answered)
-    col1, col2, col3 = st.columns([0.6,1,0.6])
-    col2.title("")
-    col2.title(f"O código da sua pesquisa é {codigo}")
-    col2.subheader("Este dado deverá ser inserido na tela inicial da pesquisa junto")
-    col1, col2, col3 = st.columns([0.8,1,0.5])
-    col2.subheader("com o código de verificação pessoal")
-    col1, col2, col3 = st.columns([0.85,1,0.8])
-    col2.markdown("Acesse o link https://www.google.com (placeholder) para responder ao questionário")
+    confirmation_email(st.session_state['email'], codigo, check_answers)
+    st.title("")
+    _, col, _ = st.columns(3)
+    col.subheader("O ID do local de trabalho é único e refere-se aos seguintes dados informados:")
+    _, col, _ = st.columns([1.5,1,1.5])
+    for i in check_answers:
+        col.markdown(f"- {i}")
+    _, col, _ = st.columns(3)
+    col.subheader("Você pode usar este ID sempre que desejar avaliar o mesmo local de trabalho")
+    col.title("")
+    _, col, _ = st.columns([1,3,1])
+    col.subheader('Este é o ID do seu local de trabalho:')
+    _, col, _ = st.columns([1.5,1,1.5])
+    col.title(codigo)
+    _, col, _ = st.columns([1,3,1])
+    col.subheader("Informe o ID do local de trabalho para todos os participantes da pesquisa.")
+    col.subheader("Este código será necessário para acessar o questionário.")
