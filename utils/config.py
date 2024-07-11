@@ -8,6 +8,9 @@ from streamlit_gsheets import GSheetsConnection
 import gspread
 from google.oauth2.service_account import Credentials
 import json
+from streamlit_tags import st_tags
+from time import sleep
+from datetime import datetime
 # import pandas as pd
 
 # ---------------VARIÁVEIS---------------
@@ -37,8 +40,7 @@ authorization_list = ["519249","215333","885531","618511","572447","869808","795
 
 cep_link = "https://viacep.com.br/ws/{}/json/"
 
-# questions = ['codigo', 'email','cep','endereco','numero','complemento', 'bairro','cidade', 'uf','local-trabalho','ocupacao','ocupacao-desc','aplicada-toda-ocupacao','aplicada-toda-ocupacao-desc']
-# build_df = pd.DataFrame(columns=questions)
+quest_link = 'https://www.google.com'
 
 # ---------------------------------------
 
@@ -116,21 +118,21 @@ def confirmation_email(mail_person:str, id_: str, data: str):
 def mailto(participants: list, id_: str):
     corpo_email = f"""
     <h1>Você foi convidado a avaliar o seu local de trabalho.</h1>
-    <p>Clique aqui para acessar o questionário https://www.google.com e informe o ID do seu local de trabalho:</p>
+    <p>Clique aqui para acessar o questionário {quest_link} e informe o ID do seu local de trabalho:</p>
     <h2><strong>{id_}</strong></h2>
     <br>
     <hr>
     <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>
     <a href="https://labeee.ufsc.br/pt-br/en-welcome"><img src="https://labeee.ufsc.br/sites/default/files/labeee_final_completo_maior.png" width="400" /></a>"""    
-    msg = email.message.Message()
-    msg['Subject'] = f'CONFIRMAÇÃO DE PARTICIPAÇÃO - QAI em escritórios, LabEEE'
-    msg['From'] = 'escritorios.qai.bot@gmail.com'
-    msg.add_header('Content-Type', 'text/html')
-    s = smtplib.SMTP('smtp.gmail.com: 587')
-    msg.set_payload(corpo_email)
-    s.starttls()
-    s.login(msg['From'], password)
     for participant in participants:
+        msg = email.message.Message()
+        msg['Subject'] = f'CONFIRMAÇÃO DE PARTICIPAÇÃO - QAI em escritórios, LabEEE'
+        msg['From'] = 'escritorios.qai.bot@gmail.com'
+        msg.add_header('Content-Type', 'text/html')
+        s = smtplib.SMTP('smtp.gmail.com: 587')
+        msg.set_payload(corpo_email)
+        s.starttls()
+        s.login(msg['From'], password)
         msg['To'] = participant
         s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
 
