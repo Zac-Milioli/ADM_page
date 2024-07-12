@@ -5,8 +5,10 @@ from utils.config import *
 initialize_page()
 
 col1, col2 = st.columns([5,1])
-if col2.button(label="Ir para o dashboard"):
+if col2.button(label="Ir para o dashboard", use_container_width=True):
     switch_page("ADM_plotpage")
+if col2.button(label="Verificar meu local de trabalho", use_container_width=True):
+    switch_page("ADM_searchpage")
 col1, col2, col3 = st.columns([1.5,1,1.5])
 col2.title("ADMINISTRADOR")
 col1, col2, col3 = st.columns([1.9,1.7,2])

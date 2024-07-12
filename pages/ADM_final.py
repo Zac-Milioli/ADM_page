@@ -12,6 +12,7 @@ _, col, _ = st.columns(3)
 data_review_c = col.container(border=True)
 data_review_c.subheader("O ID do local de trabalho é único e refere-se aos seguintes dados informados:")
 col1, col2 = data_review_c.columns(2)
+st.session_state['check_answers'][0] = int(st.session_state['check_answers'][0])
 parte1, parte2 = st.session_state.get('check_answers')[:7], st.session_state.get('check_answers')[8:]
 for item in parte1:
     col1.markdown(f"- {item}")
