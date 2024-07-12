@@ -2,6 +2,8 @@ from utils.config import *
 
 initialize_page()
 
+if st.button(label='Voltar'):
+    switch_page("ADM_firstpage")
 st.title("Busca de local de trabalho")
 id_search = st.text_input(label="Insira o ID do seu local de trabalho", max_chars=8)
 _, col, _ = st.columns([3,1,3])
