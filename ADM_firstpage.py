@@ -24,6 +24,7 @@ col2.subheader('')
 if col2.button(label="Enviar código de verificação", use_container_width=True):
     try:
         st.session_state['auth_code'] = mail_auth_code(email)
+        st.session_state['email'] = email
     except:
         st.error('Um erro ocorreu ao tentar enviar o email de validação. Verifique se o email inserido está correto e tente novamente', icon="⚠️")
 codigo = form_email.text_input(label="Código", max_chars=6)
@@ -32,7 +33,7 @@ if col2.button(label="Validar código", use_container_width=True):
     if not st.session_state.get('auth_code'):
         st.error('ERRO: O código de confirmação não foi gerado', icon="⚠️")
     elif st.session_state['auth_code'] == codigo:
-        st.session_state['email'] = email
         switch_page("ADM_edificio")
     else:
         st.error('ERRO: O código inserido é diferente do código enviado', icon="⚠️")
+        

@@ -85,17 +85,28 @@ if not body.get('erro'):
 
 col1, col2 = st.columns([4,1])
 if col2.button(label='Gerar ID do local de trabalho', use_container_width=True, disabled=st.session_state['not_all_answered']):
-    with st.spinner("Verificando base de dados e registrando local de trabalho..."):
-        codigo = randint(10000000, 99999999)
-        answered = [codigo, st.session_state['email']] + check_answers
-        register_building(answered)
-        confirmation_email(st.session_state['email'], codigo, check_answers)
-        st.session_state['id_generated'] = True
-        st.session_state['build_id'] = codigo
-        st.session_state['check_answers'] = check_answers
-    st.success("Local de trabalho registrado com sucesso! Você será reencaminhado à página de compartilhamento em breve", icon="✅")
-    sleep(4)
-    switch_page("ADM_final")
+    with st.spinner("Verificando base de dados..."):
+        status = verify_build_exists(cep=cep, numero=numero, complemento=complemento, ocupacao=ocupa_trabalho, ocupacao_desc=f"{n_pavimentos}" if n_pavimentos is not None else None, aplicada_toda_ocupacao=aplicada_todos_locais_desc)
+    if status == "OK":
+        with st.spinner('Registrando local de trabalho na base de dados...'):
+            codigo = randint(10000000, 99999999)
+            answered = [codigo, st.session_state['email']] + check_answers
+            register_building(answered)
+            confirmation_email(st.session_state['email'], codigo, check_answers)
+            st.session_state['id_generated'] = True
+            st.session_state['build_id'] = codigo
+            st.session_state['check_answers'] = check_answers
+        st.success("Local de trabalho registrado com sucesso! Você será reencaminhado à página de compartilhamento", icon="✅")
+        aguarde = st.progress(0)
+        for percent_complete in range(100):
+            sleep(0.03)
+            aguarde.progress(percent_complete+1)
+        switch_page("ADM_final")
+    else:
+        st.error("ERRO: Local de trabalho já existe na base de dados", icon='⚠️')
+
+
+# VERSÃO ANTIGA (Página de emails e dados do local de trabalho embutidos na página de registro de local)
 # if st.session_state.get("id_generated"):
 #     st.title("")
 #     _, col, _ = st.columns(3)

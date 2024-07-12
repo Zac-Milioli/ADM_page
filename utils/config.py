@@ -62,6 +62,7 @@ def initialize_page():
 
 
 def register_building(values_list: list):
+    values_list.append(str(datetime.now()))
     worksheet_build.append_row(values_list)
 
 
@@ -72,6 +73,15 @@ def get_build_info_by_id(id_: int):
     if response.empty:
         return None, "ERRO"
     return response, "OK"
+
+
+def verify_build_exists(cep, numero, complemento, ocupacao, ocupacao_desc, aplicada_toda_ocupacao):
+    conn = st.connection("gsheets", type=GSheetsConnection)
+    sql = f'''SELECT * FROM build WHERE "cep" = {cep} AND "numero" = '{numero}' AND "complemento" = '{complemento}' AND "ocupacao" = '{ocupacao}' AND "ocupacao-desc" = '{ocupacao_desc}' AND "aplicada-toda-ocupacao" = '{aplicada_toda_ocupacao}' '''
+    response = conn.query(sql)
+    if response.empty:
+        return "OK"
+    return False
 
 
 def mail_auth_code(mail_person:str):
