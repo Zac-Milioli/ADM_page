@@ -70,7 +70,7 @@ def register_building(values_list: list):
 
 
 def get_build_info_by_id(id_: int):
-    conn = st.connection("gsheets", type=GSheetsConnection)
+    conn = st.connection("gsheets", type=GSheetsConnection, ttl=5)
     sql = f'SELECT * FROM build WHERE "id" = {id_}'
     response = conn.query(sql)
     if response.empty:
@@ -89,7 +89,7 @@ def verify_build_exists(cep, numero, complemento, ocupacao, ocupacao_desc, aplic
     items = [cep, numero, complemento, ocupacao, ocupacao_desc, aplicada_toda_ocupacao]
     if check_for_injection(items) == "INJECTION":
         return False
-    conn = st.connection("gsheets", type=GSheetsConnection)
+    conn = st.connection("gsheets", type=GSheetsConnection, ttl=5)
     sql = f'''SELECT * FROM build WHERE "cep" = {cep} AND "numero" = '{numero}' AND "complemento" = '{complemento}' AND "ocupacao" = '{ocupacao}' AND "ocupacao-desc" = '{ocupacao_desc}' AND "aplicada-toda-ocupacao" = '{aplicada_toda_ocupacao}' '''
     response = conn.query(sql)
     if response.empty:
