@@ -6,29 +6,35 @@ col1, col2, col3 = st.columns([1,1.5,1])
 if col1.button('Voltar ao início'):
     switch_page("ADM_firstpage")
 
+st.title("")
 
-st.title("")
-_, col, _ = st.columns(3)
-data_review_c = col.container(border=True)
-data_review_c.subheader("O ID do local de trabalho é único e refere-se aos seguintes dados informados:")
-col1, col2 = data_review_c.columns(2)
-st.session_state['check_answers'][0] = int(st.session_state['check_answers'][0])
-parte1, parte2 = st.session_state.get('check_answers')[:7], st.session_state.get('check_answers')[8:]
-for item in parte1:
-    col1.markdown(f"- {item}")
-for item in parte2:
-    col2.markdown(f"- {item}")
-data_review_c.subheader("Você pode usar este ID sempre que desejar avaliar o mesmo local de trabalho")
-st.title("")
 st.subheader('Este é o ID do seu local de trabalho:')
 st.title(st.session_state.get("build_id"))
+st.markdown("O ID do local de trabalho é único. Você pode utilizá-lo sempre que desejar avaliar o mesmo local de trabalho.")
+st.title("")
+data_review_c = st.container(border=True)
+try:
+    if_date = st.session_state.get('check_answers')[-1]
+    if_date = datetime.strptime(if_date, '%Y-%m-%d %H:%M:%S.%f')
+    if_date = if_date.strftime('%d/%m/%Y %H:%M')
+    if_date = f', registrados em {if_date}'
+except:
+    if_date = ''
+data_review_c.markdown(f"Este ID refere-se aos seguintes dados informados{if_date}:")
+col11, col21 = data_review_c.columns(2)
+st.session_state['check_answers'][0] = int(st.session_state['check_answers'][0])
+parte1, parte2 = st.session_state.get('check_answers')[:7], st.session_state.get('check_answers')[7:]
+col11.markdown(f"- CEP: {parte1[0]}\n- Endereço: {parte1[1]}\n- Número: {parte1[2]}\n- Complemento: {parte1[3]}\n- Bairro: {parte1[4]}\n- Cidade: {parte1[5]}\n- Estado: {parte1[6]}")
+desc_trecho_pavimento = f"- Pavimento(s): {parte2[2]}\n" if parte2[1] == 'Trecho de um pavimento' else ''
+col21.markdown(f"- Local de trabalho: {parte2[0]}\n- Ocupação: {parte2[1]}\n{desc_trecho_pavimento}- Aplicação em todo o trecho: {parte2[3]}\n- Trecho: {parte2[4]}")
+if parte2[-2] != 'Completo':
+    col21.markdown(f"- Trecho: {parte2[-2]}")
+st.title("")
 st.subheader("Informe o ID do local de trabalho para todos os participantes da pesquisa.")
-st.subheader("Este código será necessário para acessar o questionário.")
-
+st.markdown("Este código será necessário para acessar o questionário.")
 st.title("")
-st.title("")
-participants = st_tags(label="Insira a lista de emails no campo abaixo para convidar os participantes da pesquisa automaticamente", text='Escreva o email e pressione ENTER para adicionar')
-_, col = st.columns([4,1])
+participants = st.text_input(label="Insira a lista de emails no campo abaixo para convidar os participantes da pesquisa automaticamente:", placeholder='Escreva os emails separados por vírgula')
+_, col = st.columns([3,1])
 if col.button(label='Enviar emails', use_container_width=True):
     try:
         with st.spinner("Enviando emails..."):
@@ -38,7 +44,8 @@ if col.button(label='Enviar emails', use_container_width=True):
         st.error('Houve um problema ao enviar os emails', icon="⚠️")
 
 st.title("")
-st.subheader("Se preferir, copie a mensagem abaixo no seu email:")
+
+st.markdown("Se preferir, copie a mensagem abaixo no seu email:")
 st.code(body=f"""Você foi convidado a avaliar o seu local de trabalho.
-Clique aqui para acessar o questionário {quest_link} e informe o ID do seu local de trabalho:
+Acesse o questionário através do link {quest_link} e informe o ID do seu local de trabalho:
 {st.session_state.get('build_id')}""", line_numbers=True)

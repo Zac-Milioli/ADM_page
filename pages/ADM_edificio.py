@@ -53,7 +53,7 @@ col1.markdown("O seu local de trabalho ocupa:")
 col2.title("")
 ocupa_trabalho = col2.radio(label="none", label_visibility="collapsed", options=["Edifício completo", "Pavimento(s) inteiro(s)", "Trecho de um pavimento"], horizontal=False, index=None)
 
-n_pavimentos = 'Trecho'
+n_pavimentos = 'Trecho de um pavimento'
 col3.title('')
 col3.title('')
 col3.title('')
@@ -73,7 +73,7 @@ aplicada_todos_locais = col2.radio(label='none', label_visibility="collapsed", o
 if aplicada_todos_locais == "Não":
     aplicada_todos_locais_desc = col3.text_input(label='Informe o trecho')
 else:
-    aplicada_todos_locais_desc = "Completo"
+    aplicada_todos_locais_desc = "Todos os locais de ocupação"
 
 if not st.session_state.get('not_all_answered'):
     st.session_state['not_all_answered'] = True    

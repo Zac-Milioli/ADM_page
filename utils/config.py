@@ -148,12 +148,13 @@ def confirmation_email(mail_person:str, id_: str, data: str):
 def mailto(participants: list, id_: str):
     corpo_email = f"""
     <h1>Você foi convidado a avaliar o seu local de trabalho.</h1>
-    <p>Clique aqui para acessar o questionário {quest_link} e informe o ID do seu local de trabalho:</p>
+    <p><a href={quest_link}>Clique aqui para acessar o questionário</a> e informe o ID do seu local de trabalho:</p>
     <h2><strong>{id_}</strong></h2>
     <br>
     <hr>
     <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>
     <a href="https://labeee.ufsc.br/pt-br/en-welcome"><img src="https://labeee.ufsc.br/sites/default/files/labeee_final_completo_maior.png" width="400" /></a>"""    
+    participants = participants.split(",")
     for participant in participants:
         msg = email.message.Message()
         msg['Subject'] = f'CONVITE - QAI em escritórios, LabEEE'
