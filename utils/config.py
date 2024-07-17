@@ -75,8 +75,8 @@ def check_for_injection(items: list):
 
 
 def get_build_info_by_id(id_: int, email: str):
-    conn = st.connection("gsheets", type=GSheetsConnection, ttl=10)
-    sql = f'SELECT * FROM build WHERE "id" = {id_} AND "email" = "{email}"'
+    conn = st.connection("gsheets", type=GSheetsConnection, ttl=0)
+    sql = f'SELECT * FROM build WHERE "id" = {id_} AND "email" = \'{email}\''
     response = conn.query(sql)
     if response.empty:
         return None, "ERROR"
@@ -87,8 +87,8 @@ def verify_build_exists(cep, numero, complemento, ocupacao, ocupacao_desc, aplic
     items = [cep, numero, complemento, ocupacao, ocupacao_desc, aplicada_toda_ocupacao]
     if check_for_injection(items) == "INJECTION":
         return False
-    conn = st.connection("gsheets", type=GSheetsConnection, ttl=10)
-    sql = f'''SELECT * FROM build WHERE "cep" = {cep} AND "numero" = '{numero}' AND "complemento" = '{complemento}' AND "ocupacao" = '{ocupacao}' AND "ocupacao-desc" = '{ocupacao_desc}' AND "aplicada-toda-ocupacao" = '{aplicada_toda_ocupacao}' '''
+    conn = st.connection("gsheets", type=GSheetsConnection, ttl=0)
+    sql = f'SELECT * FROM build WHERE "cep" = {cep} AND "numero" = \'{numero}\' AND "complemento" = \'{complemento}\' AND "ocupacao" = \'{ocupacao}\' AND "ocupacao-desc" = \'{ocupacao_desc}\' AND "aplicada-toda-ocupacao" = \'{aplicada_toda_ocupacao}\''
     response = conn.query(sql)
     if response.empty:
         return "OK"

@@ -86,7 +86,7 @@ if not body.get('erro'):
 col1, col2 = st.columns([4,1])
 if col2.button(label='Gerar ID do local de trabalho', use_container_width=True, disabled=st.session_state['not_all_answered']):
     with st.spinner("Verificando base de dados..."):
-        status = verify_build_exists(cep=cep, numero=numero, complemento=complemento, ocupacao=ocupa_trabalho, ocupacao_desc=f"{n_pavimentos}" if n_pavimentos is not None else None, aplicada_toda_ocupacao=aplicada_todos_locais_desc)
+        status = verify_build_exists(cep=cep, numero=numero, complemento=complemento, ocupacao=ocupa_trabalho, ocupacao_desc=f"{n_pavimentos}" if n_pavimentos is not None else None, aplicada_toda_ocupacao=aplicada_todos_locais)
     if status == "OK":
         with st.spinner('Registrando local de trabalho na base de dados...'):
             codigo = randint(10000000, 99999999)

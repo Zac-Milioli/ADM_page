@@ -26,7 +26,6 @@ if col2.button(label="Validar código e buscar local de trabalho", use_container
         st.error('ERRO: O código de confirmação não foi gerado', icon="⚠️")
     elif st.session_state['auth_code'] == codigo:
         returned, status = get_build_info_by_id(id_=int(id_search), email=st.session_state['email'])
-        print(f"RESPONSE:\n{returned}")
         if status == "OK":
             return_list = returned.iloc[0].tolist()
             st.session_state['build_id'] = int(return_list.pop(0))
