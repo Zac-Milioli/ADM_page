@@ -8,7 +8,6 @@ from streamlit_gsheets import GSheetsConnection
 import gspread
 from google.oauth2.service_account import Credentials
 import json
-from streamlit_tags import st_tags
 from time import sleep
 from datetime import datetime
 # import pandas as pd
@@ -65,17 +64,7 @@ def initialize_page():
 
 
 def register_building(values_list: list):
-    values_list.append(str(datetime.now()))
     worksheet_build.append_row(values_list)
-
-
-def get_build_info_by_id(id_: int):
-    conn = st.connection("gsheets", type=GSheetsConnection, ttl=5)
-    sql = f'SELECT * FROM build WHERE "id" = {id_}'
-    response = conn.query(sql)
-    if response.empty:
-        return None, "ERRO"
-    return response, "OK"
 
 
 def check_for_injection(items: list):
@@ -85,11 +74,20 @@ def check_for_injection(items: list):
     return "OK"
 
 
+def get_build_info_by_id(id_: int, email: str):
+    conn = st.connection("gsheets", type=GSheetsConnection, ttl=10)
+    sql = f'SELECT * FROM build WHERE "id" = {id_} AND "email" = "{email}"'
+    response = conn.query(sql)
+    if response.empty:
+        return None, "ERROR"
+    return response, "OK"
+
+
 def verify_build_exists(cep, numero, complemento, ocupacao, ocupacao_desc, aplicada_toda_ocupacao):
     items = [cep, numero, complemento, ocupacao, ocupacao_desc, aplicada_toda_ocupacao]
     if check_for_injection(items) == "INJECTION":
         return False
-    conn = st.connection("gsheets", type=GSheetsConnection, ttl=5)
+    conn = st.connection("gsheets", type=GSheetsConnection, ttl=10)
     sql = f'''SELECT * FROM build WHERE "cep" = {cep} AND "numero" = '{numero}' AND "complemento" = '{complemento}' AND "ocupacao" = '{ocupacao}' AND "ocupacao-desc" = '{ocupacao_desc}' AND "aplicada-toda-ocupacao" = '{aplicada_toda_ocupacao}' '''
     response = conn.query(sql)
     if response.empty:
@@ -103,6 +101,28 @@ def mail_auth_code(mail_person:str):
     <p>Este é o seu código de verificação para se cadastrar como administrador<p>
     <h1><strong>{auth_code}</strong></h1>
     <p>Insira este código na página do ADM e informe os dados necessários para criar o ID do local de trabalho.</p>
+    <hr>
+    <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>
+    <a href="https://labeee.ufsc.br/pt-br/en-welcome"><img src="https://labeee.ufsc.br/sites/default/files/labeee_final_completo_maior.png" width="400" /></a>"""
+    msg = email.message.Message()
+    msg['Subject'] = f'CÓDIGO DE VERIFICAÇÃO - QAI em escritórios, LabEEE'
+    msg['From'] = 'escritorios.qai.bot@gmail.com'
+    msg['To'] = mail_person
+    msg.add_header('Content-Type', 'text/html')
+    msg.set_payload(corpo_email)
+    s = smtplib.SMTP('smtp.gmail.com: 587')
+    s.starttls()
+    s.login(msg['From'], password)
+    s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
+    return auth_code
+
+
+def mail_auth_code_searchpage(mail_person:str):
+    auth_code = authorization_list[randint(0, len(authorization_list)-1)]
+    corpo_email = f"""
+    <p>Este é o seu código de verificação para buscar seu local de trabalho<p>
+    <h1><strong>{auth_code}</strong></h1>
+    <p>Caso você não tenha solicitado este código, basta ignorar este email.</p>
     <hr>
     <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>
     <a href="https://labeee.ufsc.br/pt-br/en-welcome"><img src="https://labeee.ufsc.br/sites/default/files/labeee_final_completo_maior.png" width="400" /></a>"""

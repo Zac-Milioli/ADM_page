@@ -90,12 +90,13 @@ if col2.button(label='Gerar ID do local de trabalho', use_container_width=True, 
     if status == "OK":
         with st.spinner('Registrando local de trabalho na base de dados...'):
             codigo = randint(10000000, 99999999)
-            answered = [codigo, st.session_state['email']] + check_answers
+            datetime_now = str(datetime.now()) 
+            answered = [codigo, st.session_state['email']] + check_answers + [datetime_now]
             register_building(answered)
             confirmation_email(st.session_state['email'], codigo, check_answers)
             st.session_state['id_generated'] = True
             st.session_state['build_id'] = codigo
-            st.session_state['check_answers'] = check_answers
+            st.session_state['check_answers'] = check_answers + [datetime_now]
         st.success("Local de trabalho registrado com sucesso! Você será reencaminhado à página de compartilhamento", icon="✅")
         aguarde = st.progress(0)
         for percent_complete in range(100):

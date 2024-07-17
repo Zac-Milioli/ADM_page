@@ -25,10 +25,8 @@ col11, col21 = data_review_c.columns(2)
 st.session_state['check_answers'][0] = int(st.session_state['check_answers'][0])
 parte1, parte2 = st.session_state.get('check_answers')[:7], st.session_state.get('check_answers')[7:]
 col11.markdown(f"- CEP: {parte1[0]}\n- Endereço: {parte1[1]}\n- Número: {parte1[2]}\n- Complemento: {parte1[3]}\n- Bairro: {parte1[4]}\n- Cidade: {parte1[5]}\n- Estado: {parte1[6]}")
-desc_trecho_pavimento = f"- Pavimento(s): {parte2[2]}\n" if parte2[1] == 'Trecho de um pavimento' else ''
+desc_trecho_pavimento = f"- Pavimento(s): {parte2[2]}\n" if parte2[1] != 'Trecho de um pavimento' else ''
 col21.markdown(f"- Local de trabalho: {parte2[0]}\n- Ocupação: {parte2[1]}\n{desc_trecho_pavimento}- Aplicação em todo o trecho: {parte2[3]}\n- Trecho: {parte2[4]}")
-if parte2[-2] != 'Completo':
-    col21.markdown(f"- Trecho: {parte2[-2]}")
 st.title("")
 st.subheader("Informe o ID do local de trabalho para todos os participantes da pesquisa.")
 st.markdown("Este código será necessário para acessar o questionário.")
