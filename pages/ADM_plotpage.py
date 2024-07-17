@@ -13,3 +13,5 @@ st.title("")
 col1, col2, col3 = st.columns(3)
 if col2.button(label='Voltar à página inicial de ADM', use_container_width=True):
     switch_page('ADM_firstpage')
+
+footer()

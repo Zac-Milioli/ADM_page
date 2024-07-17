@@ -36,4 +36,5 @@ if col2.button(label="Validar código", use_container_width=True):
         switch_page("ADM_edificio")
     else:
         st.error('ERRO: O código inserido é diferente do código enviado', icon="⚠️")
-        
+    
+footer()

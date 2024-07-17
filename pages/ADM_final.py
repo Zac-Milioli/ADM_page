@@ -47,3 +47,5 @@ st.markdown("Se preferir, copie a mensagem abaixo no seu email:")
 st.code(body=f"""Você foi convidado a avaliar o seu local de trabalho.
 Acesse o questionário através do link {quest_link} e informe o ID do seu local de trabalho:
 {st.session_state.get('build_id')}""", line_numbers=True)
+
+footer()

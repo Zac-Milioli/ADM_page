@@ -39,6 +39,8 @@ cep_link = "https://viacep.com.br/ws/{}/json/"
 
 quest_link = 'https://www.google.com'
 
+support_mail = "escritorios.qai.bot@gmail.com"
+
 # ESTA VARIÁVEL É SENSÍVEL E NA APLICAÇÃO REAL DEVE SER ADICIONADA AO ENV DO STREAMLIT E ACESSADA ATRAVÉS DE st.secrets["INJECTION"]
 injection = ['insert', 'drop', 'create', 'select', '*', 'update', 'delete', 'alter', 'truncate', 'execute', 'union', '--', '#', ';', 'true', 'false']
 
@@ -59,8 +61,16 @@ def initialize_page():
         footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True,)
-    col1, col2, col3 = st.columns(3)
-    col2.image(r'static/lab_banner.png', width=400)
+
+
+def footer():
+    st.title('')
+    st.title('')
+    st.title('')
+    col1, _, col2 = st.columns([0.5,1.5,0.5])
+    col1.image(r'static/lab_banner.png', width=300)
+    col2.markdown("")
+    col2.caption(f"Dúvidas e suporte: {support_mail}")
 
 
 def register_building(values_list: list):

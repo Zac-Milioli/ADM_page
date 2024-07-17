@@ -37,3 +37,4 @@ if col2.button(label="Validar código e buscar local de trabalho", use_container
     else:
         st.error('ERRO: O código inserido é diferente do código enviado', icon="⚠️")
 
+footer()
