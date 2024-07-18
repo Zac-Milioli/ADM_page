@@ -23,7 +23,7 @@ check_inputs = True if not (id_search and codigo) else False
 col1, col2, col3 = form_email.columns(3)
 if col2.button(label="Validar código e buscar local de trabalho", use_container_width=True, disabled=check_inputs):
     if not st.session_state.get('auth_code'):
-        st.error('ERRO: O código de confirmação não foi gerado', icon="⚠️")
+        st.error('ERRO: O código de validação não foi gerado', icon="⚠️")
     elif st.session_state['auth_code'] == codigo:
         returned, status = get_build_info_by_id(id_=int(id_search), email=st.session_state['email'])
         if status == "OK":
