@@ -7,7 +7,6 @@ import requests
 from streamlit_gsheets import GSheetsConnection
 import gspread
 from google.oauth2.service_account import Credentials
-import json
 from time import sleep
 from datetime import datetime
 # import pandas as pd
