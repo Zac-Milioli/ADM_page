@@ -29,7 +29,6 @@ sheet_id = "1T3D_x6qr4OjXQ6qMXJR0ZCywifJaHP1ck-PbZ2vT_2I"
 
 workbook = client.open_by_key(sheet_id)
 worksheet_build = workbook.worksheet('build')
-worksheet_user = workbook.worksheet('user')
 
 # ESTA VARIÁVEL É SENSÍVEL E NA APLICAÇÃO REAL DEVE SER ADICIONADA AO ENV DO STREAMLIT E ACESSADA ATRAVÉS DE st.secrets['EMAIL_PASSWORD']
 password = "sxux ztfv fsiw aqfp"
