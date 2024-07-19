@@ -115,7 +115,7 @@ def mail_auth_code(mail_person:str):
     <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>
     <a href="https://labeee.ufsc.br/pt-br/en-welcome"><img src="https://labeee.ufsc.br/sites/default/files/labeee_final_completo_maior.png" width="400" /></a>"""
     msg = email.message.Message()
-    msg['Subject'] = f'CÓDIGO DE VERIFICAÇÃO - QAI em escritórios, LabEEE'
+    msg['Subject'] = f'CÓDIGO DE VERIFICAÇÃO - InsightIE, LabEEE'
     msg['From'] = 'escritorios.qai.bot@gmail.com'
     msg['To'] = mail_person
     msg.add_header('Content-Type', 'text/html')
@@ -137,7 +137,7 @@ def mail_auth_code_searchpage(mail_person:str):
     <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>
     <a href="https://labeee.ufsc.br/pt-br/en-welcome"><img src="https://labeee.ufsc.br/sites/default/files/labeee_final_completo_maior.png" width="400" /></a>"""
     msg = email.message.Message()
-    msg['Subject'] = f'CÓDIGO DE VERIFICAÇÃO - QAI em escritórios, LabEEE'
+    msg['Subject'] = f'CÓDIGO DE VERIFICAÇÃO - InsightIE, LabEEE'
     msg['From'] = 'escritorios.qai.bot@gmail.com'
     msg['To'] = mail_person
     msg.add_header('Content-Type', 'text/html')
@@ -165,7 +165,7 @@ def confirmation_email(mail_person:str, id_: str, data: str):
     <p>Esta é uma mensagem automática, não é necessário respondê-la.</p><br><br>
     <a href="https://labeee.ufsc.br/pt-br/en-welcome"><img src="https://labeee.ufsc.br/sites/default/files/labeee_final_completo_maior.png" width="400" /></a>"""
     msg = email.message.Message()
-    msg['Subject'] = f'CONFIRMAÇÃO DE CADASTRO - QAI em escritórios, LabEEE'
+    msg['Subject'] = f'CONFIRMAÇÃO DE CADASTRO - InsightIE, LabEEE'
     msg['From'] = 'escritorios.qai.bot@gmail.com'
     msg['To'] = mail_person
     msg.add_header('Content-Type', 'text/html')
@@ -174,6 +174,7 @@ def confirmation_email(mail_person:str, id_: str, data: str):
     s.starttls()
     s.login(msg['From'], password)
     s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
+
 
 def mailto(participants: list, id_: str):
     corpo_email = f"""
@@ -187,7 +188,7 @@ def mailto(participants: list, id_: str):
     participants = participants.split(",")
     for participant in participants:
         msg = email.message.Message()
-        msg['Subject'] = f'CONVITE - QAI em escritórios, LabEEE'
+        msg['Subject'] = f'CONVITE - InsightIE, LabEEE'
         msg['From'] = 'escritorios.qai.bot@gmail.com'
         msg.add_header('Content-Type', 'text/html')
         s = smtplib.SMTP('smtp.gmail.com: 587')
