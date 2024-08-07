@@ -18,10 +18,28 @@ project = "VOSS"
 placeholder_img = r'static/placeholder.png'
 st.session_state['auth'] = False
 
-credentials = st.secrets['CREDENTIALS']
+# Extrair os dados de credentials
+credentials = {
+    "type": st.secrets['connections']['gsheets']['type'],
+    "project_id": st.secrets['connections']['gsheets']['project_id'],
+    "private_key_id": st.secrets['connections']['gsheets']['private_key_id'],
+    "private_key": st.secrets['connections']['gsheets']['private_key'],
+    "client_email": st.secrets['connections']['gsheets']['client_email'],
+    "client_id": st.secrets['connections']['gsheets']['client_id'],
+    "auth_uri": st.secrets['connections']['gsheets']['auth_uri'],
+    "token_uri": st.secrets['connections']['gsheets']['token_uri'],
+    "auth_provider_x509_cert_url": st.secrets['connections']['gsheets']['auth_provider_x509_cert_url'],
+    "client_x509_cert_url": st.secrets['connections']['gsheets']['client_x509_cert_url']
+}
+
 scopes = ["https://www.googleapis.com/auth/spreadsheets"]
 creds = Credentials.from_service_account_info(credentials, scopes=scopes)
 client = gspread.authorize(creds)
+
+# credentials = json.loads(st.secrets['CREDENTIALS'])
+# scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+# creds = Credentials.from_service_account_info(credentials, scopes=scopes)
+# client = gspread.authorize(creds)
 
 sheet_id = st.secrets['SHEET_ID']
 
