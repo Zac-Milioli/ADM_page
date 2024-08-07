@@ -18,7 +18,7 @@ project = "VOSS"
 placeholder_img = r'static/placeholder.png'
 st.session_state['auth'] = False
 
-credentials = json.loads(st.secrets['CREDENTIALS'])
+credentials = st.secrets['CREDENTIALS']
 scopes = ["https://www.googleapis.com/auth/spreadsheets"]
 creds = Credentials.from_service_account_info(credentials, scopes=scopes)
 client = gspread.authorize(creds)
