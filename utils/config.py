@@ -20,7 +20,7 @@ st.session_state['auth'] = False
 
 credentials = json.loads(st.secrets['CREDENTIALS'])
 scopes = ["https://www.googleapis.com/auth/spreadsheets"]
-creds = Credentials.from_service_account_file(credentials, scopes=scopes)
+creds = Credentials.from_service_account_info(credentials, scopes=scopes)
 client = gspread.authorize(creds)
 
 sheet_id = st.secrets['SHEET_ID']
