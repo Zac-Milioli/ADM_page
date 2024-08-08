@@ -10,7 +10,6 @@ from google.oauth2.service_account import Credentials
 from time import sleep
 from datetime import datetime
 from os import remove
-# import pandas as pd
 
 # ---------------VARIÁVEIS---------------
 
