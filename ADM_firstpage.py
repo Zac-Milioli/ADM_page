@@ -1,4 +1,3 @@
-import streamlit as st
 from utils.config import *
 
 initialize_page()
