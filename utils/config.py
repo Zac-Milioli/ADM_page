@@ -36,7 +36,7 @@ injection = st.secrets['INJECTION']
 
 cep_link = "https://viacep.com.br/ws/{}/json/"
 
-quest_link = 'https://www.google.com'
+quest_link = 'https://voss-labeee.streamlit.app/'
 
 support_mail = "escritorios.qai.bot@gmail.com"
 
