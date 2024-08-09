@@ -1,4 +1,5 @@
 import streamlit as st
+st.set_page_config(layout='wide',initial_sidebar_state='collapsed', page_title=f"ADM - VOSS", page_icon = '📝')
 import smtplib
 import email.message
 from random import randint
